@@ -11,10 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //@EnableAspectJAutoProxy(exposeProxy = true)
 @Slf4j
 @SpringBootApplication
-public class PureEsApplication implements ApplicationRunner {
+public class RestclientEsApplication implements ApplicationRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(PureEsApplication.class, args);
+        SpringApplication.run(RestclientEsApplication.class, args);
     }
 
     @Autowired
