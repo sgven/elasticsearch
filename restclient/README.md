@@ -14,6 +14,21 @@
     这样都是不合理的，简单的事情复杂化了。
 
     所以，还是要绕过dao的限制，通过底层的jdbcTemplate等查询数据。
+    
+    1.4 一次性查询数据量太大jdbcTemplate也会有问题，NullPointException，
+    还是可以实现分批查询的，需要对数据按照主键排序，mysql用limit，oracle用rownum，oracle特殊点。
+    流程如下：
+    
+    1.4.1 查询总数量
+    1.4.2 分批查询，oracle sql如下：
+    
+        SELECT * FROM  (
+              SELECT  ROWNUM SN, t. *   
+              FROM  table t 
+              ORDER  BY  gid
+         )
+         WHERE SN > 0  
+         AND SN <= 1000; 
 
 - 2.初始化数据，demo中不管数据是否删除，在项目中数据实际上是有is_delete的
 
