@@ -10,7 +10,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * es文档注解
  * es6以后，强制一个index下只能有一个type
- * es以后，将完全移除type
+ * es7以后，将完全移除type
  */
 @Documented
 @Target(TYPE)
