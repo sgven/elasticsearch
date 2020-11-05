@@ -29,6 +29,9 @@
          )
          WHERE SN > 0  
          AND SN <= 1000; 
+    
+    1.4.3 原生sql查不了，jdbcTemplate获取连接池空指针，dao.getSession也是session is closed，
+    可以用项目中dao封装的findPage(hql,pageIndex,pageSize)分页查询
 
 - 2.初始化数据，demo中不管数据是否删除，在项目中数据实际上是有is_delete的
 
