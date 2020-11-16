@@ -4,6 +4,8 @@ import demo.es.restclient.annotation.SyncESData;
 import demo.es.restclient.dao.FooRepo;
 import demo.es.restclient.dao.FooDao;
 import demo.es.restclient.entity.Foo;
+import demo.es.restclient.params.EsCondition;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,7 +73,11 @@ public class FooService {
 
     public List queryFoo() throws Exception{
         //模板方法，先走es查询，如果为空，再走数据库查询
-        List data = esQueryService.queryList();
+        EsCondition esCondition = new EsCondition();
+        esCondition.setIndex("foo");
+        esCondition.setType("Foo");
+        esCondition.setQueryBuilder(QueryBuilders.matchAllQuery());
+        List data = esQueryService.queryList(esCondition);
         if (data == null || data.size() ==0) {//数据库查询
             data = fooDao.query();
         }

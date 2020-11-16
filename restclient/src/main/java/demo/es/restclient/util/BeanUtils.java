@@ -1,14 +1,13 @@
 package demo.es.restclient.util;
 
 
+import demo.es.restclient.entity.IdEntity;
 import org.springframework.util.Assert;
 
+import javax.persistence.Entity;
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BeanUtils {
 
@@ -20,7 +19,7 @@ public class BeanUtils {
      * @throws IllegalAccessException
      */
     public static void transformBeanToEsMap(Object object, Map<String, Object> map)
-            throws IllegalArgumentException, IllegalAccessException {
+            throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
         List<Field> declaredFields = getAllFieldsList(object.getClass());
         for(Field field:declaredFields){
             field.setAccessible(true);
@@ -29,18 +28,21 @@ public class BeanUtils {
                 /**
                  * es不支持的数据类型 Timestamp
                  * Timestamp可以转为long 或 格式化的字符串
-                 *
-                 * es6.4.2版本不支持BigDecimal、BigInteger，之后的版本已经支持
-                 * BigDecimal转为double
-                 * BigInteger转为long
                  */
-                if (value.getClass().isAssignableFrom(Timestamp.class)) {
+                if (field.getType().isAssignableFrom(Timestamp.class)) {
                     Date date = (Date) value;
-                    Long newValue= date.getTime();
+                    Long newValue = date.getTime();
                     map.put(field.getName(), newValue);
+                } else if (field.getType().getAnnotation(Entity.class) != null) {
+                    String id = ((IdEntity) (value)).getId();
+                    map.put(field.getName(), id);
+                } else if(field.getType().isAssignableFrom(ArrayList.class) || field.getType().isAssignableFrom(Set.class)) {
+
                 } else {
                     map.put(field.getName(), value);
                 }
+            } else {
+//                map.put(field.getName(), value);
             }
         }
     }

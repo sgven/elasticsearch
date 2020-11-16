@@ -21,4 +21,6 @@ public @interface ESDocument {
 
     String typeName() default "";//数据类型
 
+    int pageSize() default 1000;//初始化分批导数据，分页大小
+
 }
