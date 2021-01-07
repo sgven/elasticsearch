@@ -75,7 +75,7 @@ public class EsQueryService {
         // buildRequest
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.from(pageIndex);
+        searchSourceBuilder.from(pageIndex*pageSize);//from表示的并不是页码，而是表示从第几条开始  相当于数组的下标
         searchSourceBuilder.size(pageSize);
         searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 
@@ -143,7 +143,7 @@ public class EsQueryService {
         // buildRequest
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.from(pageIndex);
+        searchSourceBuilder.from(pageIndex*pageSize);
         searchSourceBuilder.size(pageSize);
         searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 
